@@ -29,6 +29,14 @@ namespace AutoWrapper.Extensions
 
         public static (bool IsEncoded, string ParsedText) VerifyBodyContent(this string text)
         {
+            if(string.IsNullOrWhiteSpace(text)) 
+            {
+                return (false, text);
+            }
+            if(!text.StartsWith("{") && !text.StartsWith("["))
+            {
+                return (false, text);
+            }
             try
             {
                 var obj = JToken.Parse(text);
