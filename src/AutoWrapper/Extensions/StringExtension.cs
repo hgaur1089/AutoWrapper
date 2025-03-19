@@ -29,11 +29,7 @@ namespace AutoWrapper.Extensions
 
         public static (bool IsEncoded, string ParsedText) VerifyBodyContent(this string text)
         {
-            if(string.IsNullOrWhiteSpace(text)) 
-            {
-                return (false, text);
-            }
-            if(!text.StartsWith("{") && !text.StartsWith("["))
+            if(!IsValidJsonText(text)) 
             {
                 return (false, text);
             }
@@ -63,6 +59,18 @@ namespace AutoWrapper.Extensions
                 return Char.ToLowerInvariant(str[0]) + str.Substring(1);
             }
             return str;
+        }
+
+        private static bool IsValidJsonText(string text)
+        {
+            if(string.IsNullOrWhiteSpace(text))
+            {
+                return false;
+            }
+            bool startsWithBrace = text.StartsWith("{") && text.EndsWith("}");
+            bool startsWithBracket = text.StartsWith("[") && text.EndsWith("]");
+            
+            return startsWithBrace || startsWithBracket;
         }
         
     }
